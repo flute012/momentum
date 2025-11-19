@@ -2,20 +2,15 @@
 if (window.location.hostname !== "127.0.0.1" && window.location.hostname !== "localhost") {
   // GA4
   (function() {
-    var gtagScript = document.createElement("script");
-    gtagScript.async = true;
-    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-GELWV08JL3"; 
-    document.head.appendChild(gtagScript);
-
+    var script = document.createElement("script");
+    script.async = true;
+    script.src = "https://www.googletagmanager.com/gtag/js?id=G-GELWV08JL3"; 
+    document.head.appendChild(script);
+    
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
     window.gtag = gtag;
-
-    gtag("consent", "default", {
-      ad_storage: "granted",
-      analytics_storage: "granted"
-    });
-
+    
     gtag("js", new Date());
     gtag("config", "G-GELWV08JL3");
   })();
@@ -28,17 +23,25 @@ if (window.location.hostname !== "127.0.0.1" && window.location.hostname !== "lo
   })(window, document, "clarity", "script", "s8wu5m1wae");
 
   // 點擊追蹤
-  document.addEventListener("DOMContentLoaded", function () {
+  function initTracking() {
     var el = document.getElementById("bookstore");
     if (el) {
-      el.addEventListener("click", function () {
-        gtag("event", "bookstore_click", {
-          event_category: "engagement",
-          event_label: "Bookstore Image Link"
-        });
+      el.addEventListener("click", function() {
+        if (window.gtag) {
+          gtag("event", "bookstore_click", {
+            event_category: "engagement",
+            event_label: "Bookstore Image Link"
+          });
+        }
       });
     }
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initTracking);
+  } else {
+    initTracking();
+  }
 }
 
 
@@ -136,3 +139,4 @@ audioElements.forEach((audio, index) => {
   });
 
 });
+
